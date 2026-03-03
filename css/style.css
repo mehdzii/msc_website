@@ -1,0 +1,1570 @@
+/* ==========================================================================
+   MSC INPT - Math & Science Club Website
+   Main Stylesheet
+   
+   Structure:
+   1. Base & Typography
+   2. CSS Custom Properties (Theme Variables)
+   3. Navigation (Glassmorphism Navbar)
+   4. Hero Section (Full-viewport landing with 3D background)
+   5. About Section (Glass cards with icons)
+   6. Team Section (Editorial portrait layout)
+   7. Timeline Section (Swiss grid journey layout)
+   8. Events Section (Horizontal scroll + countdown)
+   9. CTA Section (Final call-to-action)
+   10. Footer
+   11. Animations & Utilities
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. BASE & TYPOGRAPHY
+   Sets the default font (Inter from Google Fonts) and prevents horizontal
+   overflow caused by animations or oversized elements.
+   ========================================================================== */
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    overflow-x: hidden;
+    /* Prevents horizontal scrollbar from 3D background */
+}
+
+/* ==========================================================================
+   2. CSS CUSTOM PROPERTIES (Theme Variables)
+   All colors, shadows, and effects are defined here as CSS variables.
+   This allows easy theme switching and consistent branding throughout.
+   Colors are based on the MSC Club's blue identity (#1E88E5).
+   ========================================================================== */
+:root,
+[data-bs-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #1e293b;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(255, 255, 255, 0.8);
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --accent-primary: #1E88E5;
+    /* MSC Club Blue */
+    --accent-secondary: #42A5F5;
+    --shadow-color: rgba(0, 0, 0, 0.06);
+    --glass-blur: blur(16px);
+    --btn-shadow: 0 4px 14px rgba(30, 136, 229, 0.2);
+    --btn-glow: 0 4px 14px rgba(30, 136, 229, 0.2);
+    --card-shadow: 0 8px 32px var(--shadow-color);
+    --title-gradient: linear-gradient(135deg, #0D47A1, #1E88E5, #42A5F5);
+    --icon-color: #1E88E5;
+}
+
+[data-bs-theme="dark"] {
+    --bg-color: #030712;
+    --text-color: #f8fafc;
+    --card-bg: rgba(15, 23, 42, 0.4);
+    --card-border: rgba(66, 165, 245, 0.15);
+    --nav-bg: rgba(3, 7, 18, 0.85);
+    --accent-primary: #64B5F6;
+    /* Light Blue */
+    --accent-secondary: #42A5F5;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --btn-shadow: 0 0 15px rgba(100, 181, 246, 0.4);
+    --btn-glow: 0 0 15px rgba(100, 181, 246, 0.6), 0 0 30px rgba(100, 181, 246, 0.3);
+    --card-shadow: 0 8px 32px var(--shadow-color), 0 0 1px 1px rgba(100, 181, 246, 0.2);
+    --title-gradient: linear-gradient(135deg, #BBDEFB, #64B5F6, #42A5F5);
+    --icon-color: #64B5F6;
+}
+
+/* Override Bootstrap's default body colors to use our theme variables */
+body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+/* Utility class: applies the primary accent color to any text */
+.text-accent {
+    color: var(--accent-primary) !important;
+}
+
+/* ==========================================================================
+   3. NAVIGATION (Glassmorphism Navbar)
+   Uses backdrop-filter for a frosted glass effect. On scroll, the navbar
+   shrinks its padding and gains a shadow via JS adding the 'scrolled' class.
+   ========================================================================== */
+.glass-nav {
+    background: var(--nav-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--card-border);
+    transition: all 0.5s ease;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.glass-nav.scrolled {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+.msc-logo-text {
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+    background: var(--title-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navbar-logo {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Dark mode: add a subtle blue glow around the logo */
+[data-bs-theme="dark"] .navbar-logo {
+    filter: drop-shadow(0 0 8px rgba(30, 136, 229, 0.4));
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-primary) !important;
+}
+
+/* Theme Toggle Button (currently unused - site is forced to light mode) */
+.btn-theme {
+    width: 45px;
+    height: 45px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-theme:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+[data-bs-theme="dark"] .btn-theme {
+    box-shadow: 0 0 10px rgba(30, 136, 229, 0.2);
+}
+
+/* ==========================================================================
+   4. HERO SECTION
+   Full-viewport landing area with a 3D wireframe background (Three.js),
+   large gradient headline, branded label, two CTA buttons, and a
+   bouncing scroll indicator at the bottom.
+   ========================================================================== */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-content {
+    padding-top: 120px;
+}
+
+/* Hero Label */
+.hero-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+}
+
+/* Hero Title */
+.hero-title {
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    background: var(--title-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+}
+
+.hero-title em {
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Hero Subtitle */
+.hero-subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-color);
+    opacity: 0.6;
+    max-width: 540px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+}
+
+/* Hero CTA Buttons */
+.hero-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #1E88E5, #42A5F5);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-radius: 60px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(30, 136, 229, 0.35), 0 0 40px rgba(30, 136, 229, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(30, 136, 229, 0.5), 0 0 60px rgba(30, 136, 229, 0.2);
+    color: #ffffff;
+}
+
+.hero-btn i {
+    transition: transform 0.3s ease;
+}
+
+.hero-btn:hover i {
+    transform: translateX(4px);
+}
+
+.hero-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 60px;
+    transition: all 0.3s ease;
+}
+
+.hero-btn-ghost:hover {
+    opacity: 1;
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.hero .lead {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+/* Global button styles used across multiple sections */
+.custom-btn {
+    background: var(--accent-primary);
+    border: none;
+    font-weight: 600;
+    box-shadow: var(--btn-shadow);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.custom-btn:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-3px);
+    box-shadow: var(--btn-glow);
+}
+
+/* Scroll indicator: bouncing chevron at the bottom of the hero */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    z-index: 10;
+}
+
+.scroll-indicator a {
+    color: var(--text-color);
+    opacity: 0.4;
+    transition: opacity 0.3s;
+}
+
+.scroll-indicator a:hover {
+    opacity: 1;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0) translateX(-50%);
+    }
+
+    40% {
+        transform: translateY(-15px) translateX(-50%);
+    }
+
+    60% {
+        transform: translateY(-7px) translateX(-50%);
+    }
+}
+
+/* ==========================================================================
+   5. ABOUT / GENERAL PAGE SECTIONS
+   Standard vertical padding for all major sections. Glass cards use
+   backdrop-filter for the frosted glass look with hover lift effects.
+   ========================================================================== */
+.page-section {
+    padding: 100px 0;
+}
+
+.bg-secondary-subtle {
+    /* override bootstrap secondary subtle to respect dark mode better */
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+[data-bs-theme="dark"] .bg-secondary-subtle {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Glass Cards */
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--card-shadow);
+    transition: all 0.4s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px var(--shadow-color), var(--btn-glow);
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(30, 136, 229, 0.1);
+    /* Light blue tint matching club theme */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="dark"] .icon-circle {
+    background: rgba(100, 181, 246, 0.15);
+    box-shadow: inset 0 0 10px rgba(100, 181, 246, 0.2);
+}
+
+.glass-card:hover .icon-circle {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(30, 136, 229, 0.3);
+}
+
+/* ==========================================================================
+   6. TEAM SECTION (Editorial Portrait Layout)
+   Large portrait with grayscale hover-to-color effect, mix-blend-mode
+   text overlay, and editorial inset cards for additional team members.
+   ========================================================================== */
+.editorial-grayscale {
+    filter: grayscale(100%);
+    transition: filter 0.6s ease, transform 0.6s ease;
+}
+
+.editorial-grayscale:hover {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+}
+
+.editorial-main-bg {
+    filter: grayscale(100%) contrast(1.2);
+    opacity: 0.9;
+}
+
+.blur-backdrop {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.mix-blend-mode-difference {
+    mix-blend-mode: difference;
+    color: #fff;
+    /* Always white so it inverted nicely against light/dark imagery */
+}
+
+.bg-gradient-dark {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+}
+
+.glass-card-bottom {
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid var(--card-border);
+}
+
+
+/* ==========================================================================
+   7. TIMELINE / JOURNEY SECTION
+   Swiss grid-inspired timeline layout with year markers on the left,
+   a central hero image, and content descriptions on the right.
+   ========================================================================== */
+.club-timeline-section {
+    background-color: #ffffff;
+    /* Reduced horizontal padding from 10% or 5% down to 3% */
+    padding: 60px 3%;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    text-align: center;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+    color: #000;
+    opacity: 0.8;
+}
+
+.timeline-container {
+    max-width: 1250px;
+    margin: 0 auto;
+    /* THIS IS THE ANCHOR - Don't miss this! */
+    position: relative;
+}
+
+.center-hero-image {
+    position: absolute;
+    /* Centers horizontally */
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Centers vertically within the timeline container */
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Height control: passing the timeline height slightly */
+    height: 115%;
+
+    z-index: 10;
+    pointer-events: none;
+    object-fit: contain;
+}
+
+/* Ensure the rows are underneath the image but don't clip it */
+.timeline-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 320px;
+    border-top: 1px solid #111;
+    padding: 15px 0;
+    align-items: start;
+    background: transparent;
+    /* Ensure background doesn't hide image */
+}
+
+.year-col {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #000;
+}
+
+.featured .year-col {
+    font-size: 2.6rem;
+    line-height: 0.85;
+}
+
+.content-col {
+    text-align: right;
+}
+
+.content-col h3 {
+    font-size: 0.68rem;
+    /* Extremely fine headers */
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    letter-spacing: 0.3px;
+    font-weight: 700;
+}
+
+.content-col p {
+    font-size: 0.62rem;
+    /* Compact body text */
+    line-height: 1.35;
+    color: #555;
+    max-width: 280px;
+    margin-left: auto;
+}
+
+.timeline-row:first-child {
+    border-top: none;
+}
+
+
+/* ==========================================================================
+   8. EVENTS & INITIATIVES SECTION
+   Horizontally-scrollable event cards with infinite loop (JS-powered).
+   Features a live countdown timer to the next event, PAST/UPCOMING badges,
+   and a featured event highlight with gold accent for Battle Royale.
+   ========================================================================== */
+.events-section {
+    background: #ffffff;
+    overflow: hidden;
+}
+
+/* Countdown Banner */
+.countdown-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 1rem;
+    padding: 1.25rem 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.countdown-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.countdown-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    opacity: 0.6;
+}
+
+.countdown-event-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: -0.5px;
+}
+
+.countdown-timer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 50px;
+}
+
+.countdown-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.countdown-text {
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #999;
+    margin-top: 2px;
+}
+
+.countdown-sep {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #ccc;
+    margin-top: -12px;
+}
+
+/* Horizontal Scroll */
+.events-scroll-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #ddd transparent;
+}
+
+.events-scroll-wrap::-webkit-scrollbar {
+    height: 6px;
+}
+
+.events-scroll-wrap::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.events-scroll-wrap::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 3px;
+}
+
+.events-scroll-track {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.5rem 1rem;
+    width: max-content;
+}
+
+/* Event Cards (horizontal scroll version) */
+.event-card-minimal {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    min-width: 320px;
+    flex-shrink: 0;
+}
+
+.event-card-minimal:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: #e0e0e0;
+}
+
+/* Card Tag (PAST / UPCOMING badge) */
+.event-card-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 0 1rem 0 0.5rem;
+}
+
+.past-tag {
+    background: #e5e5e5;
+    color: #888;
+}
+
+.upcoming-card-tag {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
+.event-link {
+    cursor: pointer;
+}
+
+.event-link:hover {
+    color: inherit;
+}
+
+.event-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%);
+    transition: all 0.5s ease;
+}
+
+.event-card-minimal:hover .event-img {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+.event-date-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    background: #ffffff;
+    color: #1e293b;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.upcoming-tag {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
+.event-external-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--accent-primary);
+    transition: all 0.3s ease;
+}
+
+.event-link:hover .event-external-badge {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
+.event-body {
+    padding: 1.25rem;
+    flex: 1;
+}
+
+.event-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.3px;
+}
+
+.event-location {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 0.75rem;
+}
+
+.event-location i {
+    color: var(--accent-primary);
+    margin-right: 2px;
+}
+
+.event-desc {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #666;
+    margin-bottom: 0;
+}
+
+/* Upcoming card accent */
+.event-card-minimal.upcoming {
+    border-top: 3px solid var(--accent-primary);
+}
+
+/* Featured event highlight */
+.featured-event {
+    border-top-color: #f59e0b !important;
+    background: linear-gradient(135deg, #fffbeb 0%, #fafafa 30%);
+}
+
+.featured-event .event-title i {
+    color: #f59e0b;
+}
+
+/* Responsive countdown */
+@media (max-width: 576px) {
+    .countdown-banner {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .events-scroll-track {
+        padding: 0 1rem;
+    }
+
+    .event-card-minimal {
+        width: 280px;
+        min-width: 280px;
+    }
+}
+
+/* Legacy event card styles (kept for backward compatibility) */
+.event-card {
+    transition: all 0.4s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px var(--shadow-color), var(--btn-glow);
+}
+
+.event-date {
+    background: var(--title-gradient);
+    /* Uses dynamic variable */
+    min-width: 120px;
+}
+
+[data-bs-theme="dark"] .event-date {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   9. FOOTER
+   Glassmorphism footer with social media icon buttons (Instagram, LinkedIn)
+   and a centered tagline. Social buttons animate to accent color on hover.
+   ========================================================================== */
+.glass-footer {
+    background: var(--nav-bg);
+    border-top: 1px solid var(--card-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.footer .social-btn {
+    transform: none;
+    opacity: 1;
+    background: rgba(128, 128, 128, 0.1);
+    color: var(--text-color);
+}
+
+.footer .social-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.link-muted {
+    color: var(--text-color);
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.link-muted:hover {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   10. ANIMATIONS & UTILITIES
+   Scroll-triggered fade-in animations powered by IntersectionObserver (JS).
+   Elements start invisible + translated down, then animate into view when
+   the 'is-visible' class is added. Delay classes stagger multiple elements.
+   ========================================================================== */
+.scroll-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.scroll-fade-in.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-fade-in.delay-1 {
+    transition-delay: 0.2s;
+}
+
+.scroll-fade-in.delay-2 {
+    transition-delay: 0.4s;
+}
+
+.scroll-fade-in.delay-3 {
+    transition-delay: 0.6s;
+}
+
+.title-reveal,
+.subtitle-reveal,
+.btn-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: textFadeIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.title-reveal {
+    animation-delay: 0.2s;
+}
+
+.subtitle-reveal {
+    animation-delay: 0.4s;
+}
+
+.btn-reveal {
+    animation-delay: 0.6s;
+}
+
+@keyframes textFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   11. BENTO GRID (About Section)
+   A 4-column asymmetric grid used for the "About" section.
+   Each cell has glassmorphism styling, rounded corners, and a hover
+   lift + glow effect. The grid spans different cells across columns/rows
+   for visual variety (mission=2x2, INPT=2x1, vision/values=1x1).
+   ========================================================================== */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.bento-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 2rem;
+    /* Softer, more modern corners */
+    padding: 2.5rem;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* 4 Cell Logic */
+.bento-mission {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 450px;
+}
+
+.bento-inpt {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.bento-vision,
+.bento-values {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* 1. COOL EFFECT: The Shimmering Glass Streak */
+.bento-item::after {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 50%;
+    height: 300%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: rotate(45deg);
+    transition: all 0.7s ease;
+}
+
+.bento-item:hover::after {
+    left: 150%;
+    top: 150%;
+}
+
+/* 2. COOL EFFECT: Interactive Floating Glows */
+.bento-bg-shape {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    filter: blur(60px);
+    opacity: 0.08;
+    z-index: 0;
+    transition: all 0.5s ease;
+}
+
+.bento-mission .bento-bg-shape {
+    top: -10%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+}
+
+.bento-inpt .bento-bg-shape {
+    bottom: -20%;
+    left: 5%;
+    background: var(--accent-secondary);
+}
+
+.bento-item:hover .bento-bg-shape {
+    opacity: 0.2;
+    transform: scale(1.2);
+}
+
+/* 3. COOL EFFECT: Modern Icon Squircles */
+.icon-circle {
+    width: 65px;
+    height: 65px;
+    border-radius: 20px;
+    /* Modern Squircle shape */
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-primary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Hover Lift Upgrades */
+.bento-item:hover {
+    transform: translateY(-12px) scale(1.01);
+    border-color: var(--accent-primary);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+}
+
+/* Text Polish */
+.bento-item h3 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+    z-index: 1;
+}
+
+.bento-item p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.8;
+    z-index: 1;
+}
+
+/* =========================================
+   EDITORIAL TEAM SECTION - FINAL FIX
+   ========================================= */
+.team-editorial-section {
+    position: relative;
+    padding: 180px 0;
+    overflow: hidden;
+    background: #ffffff !important;
+    isolation: isolate;
+}
+
+/* SECTION TITLE */
+.editorial-section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -2px;
+    margin-bottom: -120px;
+    position: relative;
+    z-index: 40;
+    mix-blend-mode: difference;
+}
+
+.team-composition {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 1000px;
+}
+
+.main-portrait {
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+}
+
+/* THE OVERLAPPING TEXT LAYER (positioned within .team-composition) */
+.team-text-overlay {
+    position: absolute;
+    top: 42%;
+    left: 15%;
+    z-index: 100;
+}
+
+.mix-blend-mode-difference {
+    mix-blend-mode: difference;
+    color: #ffffff !important;
+}
+
+.editorial-name {
+    font-size: clamp(4rem, 12vw, 9.5rem);
+    font-weight: 900;
+    line-height: 0.75;
+    letter-spacing: -12px;
+}
+
+/* LOWERED INSET POSITIONING */
+.editorial-inset {
+    position: absolute;
+    z-index: 3;
+    width: 240px;
+    overflow: hidden;
+}
+
+.inset-vp {
+    top: 48%;
+    left: 0%;
+}
+
+/* Lowered */
+.inset-advisor {
+    bottom: 5%;
+    right: 0%;
+}
+
+/* Lowered */
+.inset-advisor-2 {
+    bottom: -8%;
+    left: 8%;
+    width: 210px;
+}
+
+/* Deep Inset */
+
+/* IMAGE MASKING (Solves PNG Cut-off) */
+.image-mask {
+    position: relative;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+.image-mask-sm {
+    position: relative;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+}
+
+/* Interactions */
+.president-img {
+    filter: grayscale(100%);
+    transition: filter 1s ease;
+    width: 100%;
+}
+
+.president-card:hover .president-img {
+    filter: grayscale(0%);
+}
+
+.grayscale {
+    filter: grayscale(100%);
+    width: 100%;
+}
+
+/* Editorial Image Base */
+.editorial-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Tag Accent Labels */
+.tag-accent {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: inherit;
+}
+
+.tag-accent-sm {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Editorial Bio */
+.editorial-bio {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: inherit;
+    opacity: 0.8;
+    max-width: 300px;
+    line-height: 1.4;
+}
+
+/* Inset Card Info */
+.inset-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 0.75rem 0.75rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+    z-index: 5;
+}
+
+.inset-name {
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* Portrait Detail Mask */
+.portrait-detail {
+    -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+}
+
+/* Advisor 2 Image */
+.advisor2 {
+    width: 100%;
+    display: block;
+    filter: grayscale(100%);
+    object-fit: cover;
+}
+
+
+/* ==========================================================================
+   12. STATS COUNTER ROW
+   Horizontal row of key metrics (members, events, etc.) with large numbers
+   and thin dividers. Numbers animate from 0 on scroll via JS.
+   ========================================================================== */
+.stats-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Number and plus on the same line */
+.stat-number-row {
+    display: flex;
+    align-items: baseline;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1E88E5;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-plus {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1E88E5;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+/* Thin vertical divider between stats */
+.stat-divider {
+    width: 1px;
+    height: 40px;
+    background: #e2e8f0;
+}
+
+
+/* ==========================================================================
+   13. BENTO GRID (About Section)
+   A 4-column asymmetric grid. Mission card spans 2x2 with a dark gradient
+   background. INPT card is a clickable link to Google Maps. What We Do
+   uses a 2x2 icon grid. Values uses animated progress bars.
+   ========================================================================== */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.bento-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2rem;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Mission card: spans 2 columns and 2 rows */
+.bento-mission {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 400px;
+}
+
+/* INPT card: spans 2 columns */
+.bento-inpt {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+/* Small cards (What We Do, Values) */
+.bento-vision,
+.bento-values {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* --- Mission Card: Photo background with dark bottom overlay --- */
+.bento-mission-styled {
+    background-size: cover;
+    background-position: center;
+    border: none;
+}
+
+/* Dark gradient at the bottom for text legibility */
+.bento-mission-styled .bento-content {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 30%, rgba(0, 0, 0, 0.3) 70%, transparent 100%);
+    border-radius: 2rem;
+}
+
+/* Small uppercase label tag inside the mission card */
+.bento-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+}
+
+/* --- INPT Google Maps Link Badge --- */
+.inpt-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1E88E5;
+    padding: 4px 14px;
+    border: 1.5px solid #1E88E5;
+    border-radius: 2rem;
+    transition: all 0.3s;
+}
+
+.bento-inpt:hover .inpt-map-link {
+    background: #1E88E5;
+    color: #ffffff;
+}
+
+/* --- INPT Card: Campus photo background with frosted white overlay --- */
+.bento-inpt-styled {
+    background-size: cover;
+    background-position: center;
+    border: none;
+    padding: 0 !important;
+}
+
+.bento-inpt-styled>div {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.3) 70%, transparent 100%);
+    padding: 1.5rem;
+    height: 100%;
+    border-radius: 2rem;
+    transition: background 0.3s;
+}
+
+.bento-inpt-styled:hover>div {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.2) 65%, transparent 100%);
+}
+
+/* --- What We Do: 2x2 Activity Icons Grid --- */
+.bento-activity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.bento-activity-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.75rem;
+    background: rgba(30, 136, 229, 0.05);
+    border-radius: 1rem;
+    transition: all 0.3s;
+}
+
+.bento-activity-item:hover {
+    background: rgba(30, 136, 229, 0.1);
+    transform: translateY(-2px);
+}
+
+.bento-activity-item i {
+    font-size: 1.25rem;
+}
+
+.bento-activity-item span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Values: Progress Bars List --- */
+.bento-values-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.bento-value-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bento-value-name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bento-value-name i {
+    font-size: 0.8rem;
+}
+
+/* Background track for the progress bar */
+.bento-value-bar {
+    height: 5px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+/* Filled portion of the progress bar with gradient */
+.bento-value-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1E88E5, #42A5F5);
+    border-radius: 3px;
+    transition: width 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+
+/* ==========================================================================
+   RESPONSIVE: Bento Grid & Stats
+   ========================================================================== */
+@media (max-width: 991px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bento-mission {
+        grid-column: span 2;
+        grid-row: span 1;
+        min-height: 300px;
+    }
+
+    .bento-inpt {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 576px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bento-mission,
+    .bento-inpt,
+    .bento-vision,
+    .bento-values {
+        grid-column: span 1;
+    }
+
+    .stats-row {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .stat-divider {
+        display: none;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+}

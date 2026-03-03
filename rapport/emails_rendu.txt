@@ -1,0 +1,19 @@
+Sujet : Rendu de l’Atelier de Développement Web – Session 2 (MSC INPT)
+
+Bonjour Monsieur,
+
+Veuillez trouver ci-joint mon rapport détaillé concernant la session 2 de l’atelier de développement web.
+
+Dans ce projet de conception du site pour le Math & Science Club (MSC), j’ai pu appliquer et approfondir les concepts vus en cours :
+- L’utilisation de Bootstrap 5 pour une mise en page "responsive" efficace.
+- L’intégration de CSS Vanilla pour des effets visuels personnalisés (glassmorphism, dégradés).
+- La dynamisation de l’interface utilisateur grâce à JavaScript (manipulation du DOM, IntersectionObserver, compteurs).
+
+https://github.com/mehdzii/msc_website.git
+
+Je reste à votre disposition pour tout complément d’information ou commentaire sur ce travail.
+
+Cordialement,
+
+[Votre Prénom] [Votre Nom]
+Élève Ingénieur, INPT Rabat

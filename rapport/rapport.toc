@@ -1,0 +1,11 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Lien du D\'ep\^ot GitHub}{2}{section.1.1}%
+\contentsline {chapter}{\numberline {2}R\'ealisation et Captures d'\'Ecran}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Section Hero : Accueil Dymanique}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Section \'A Propos : Statistiques et Grille Bento}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Section \'Equipe : "The Core"}{5}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Section \'Ev\'enements : D\'efilement Horizontal Infinity}{6}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Le Footer (Pied de page)}{7}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Organisation du Code \& Commentaires}{10}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Conclusion}{11}{chapter.4}%

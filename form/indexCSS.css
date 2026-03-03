@@ -1,0 +1,491 @@
+/* ==========================================================================
+   MSC INPT — Registration Form Stylesheet
+   
+   Minimalist, editorial design matching the main MSC website.
+   Uses the same blue palette (#1E88E5) and Inter font family.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. BASE & RESET
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f9fa;
+    /* Very light grey background */
+    color: #1e293b;
+    /* Dark slate text */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* ==========================================================================
+   2. HEADER
+   Clean white header with club logo, title, and a back-link to the main site.
+   The title uses Playfair Display italic for the "MSC" accent.
+   ========================================================================== */
+header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+}
+
+.header-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Back-to-site navigation link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #1E88E5;
+}
+
+/* Club logo in the header */
+.form-logo {
+    height: 60px;
+    width: auto;
+    margin-bottom: 1rem;
+}
+
+/* Main title: "Join MSC" with italic accent */
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+}
+
+header h1 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #1E88E5;
+    /* MSC Club Blue accent */
+}
+
+/* Subtitle under the heading */
+header p {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+
+/* ==========================================================================
+   3. FORM CONTAINER
+   White card with subtle shadow, centered on the page.
+   Max width of 720px for readability.
+   ========================================================================== */
+main {
+    flex: 1;
+    /* Pushes footer down */
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ==========================================================================
+   4. FIELDSETS & LEGENDS
+   Fieldsets group related fields. Legends act as section titles
+   with an icon and a bottom border divider.
+   ========================================================================== */
+fieldset {
+    border: none;
+    margin-bottom: 2rem;
+    padding: 0;
+}
+
+legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f1f5f9;
+    /* Subtle separator line */
+    width: 100%;
+}
+
+/* Icon next to the legend text */
+legend i {
+    color: #1E88E5;
+    font-size: 1.1rem;
+}
+
+
+/* ==========================================================================
+   5. LABELS & FORM FIELDS
+   Each label wraps its text and its input. Two-column layout via .form-row
+   for side-by-side fields on larger screens.
+   ========================================================================== */
+label {
+    display: block;
+    margin-bottom: 1.25rem;
+}
+
+/* The small label text above each input */
+.label-text {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+/* Text inputs, selects, and textareas share a common style */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: #1e293b;
+    background: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+/* Focus state: blue border with soft glow */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #1E88E5;
+    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+}
+
+/* Placeholder text styling */
+input::placeholder,
+textarea::placeholder {
+    color: #cbd5e1;
+}
+
+/* Textarea specific: prevent horizontal resize */
+textarea {
+    resize: vertical;
+}
+
+
+/* ==========================================================================
+   6. FORM ROW (Two-column layout)
+   Places two fields side by side on screens wider than mobile.
+   ========================================================================== */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+
+/* ==========================================================================
+   7. RADIO & CHECKBOX GROUPS
+   Horizontal groups for radio buttons and checkboxes, styled as
+   clickable pill-shaped options.
+   ========================================================================== */
+.radio-group,
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Individual radio/checkbox option wrapper */
+.radio-option,
+.checkbox-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 2rem;
+    /* Pill shape */
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 0;
+}
+
+.radio-option:hover,
+.checkbox-option:hover {
+    border-color: #1E88E5;
+    color: #1E88E5;
+}
+
+/* Auto-width for radio/checkbox inputs (override the full-width default) */
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto;
+    accent-color: #1E88E5;
+    /* Blue check/radio color */
+}
+
+
+/* ==========================================================================
+   8. FILE UPLOAD AREA
+   Dashed border drop zone with cloud icon. The actual file input
+   is invisible and layered on top for click handling.
+   ========================================================================== */
+.file-label {
+    margin-bottom: 1rem;
+}
+
+.file-upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 2px dashed #e2e8f0;
+    border-radius: 0.75rem;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+}
+
+.file-upload-area:hover {
+    border-color: #1E88E5;
+    background: rgba(30, 136, 229, 0.03);
+}
+
+.file-upload-area i {
+    font-size: 1.5rem;
+    color: #1E88E5;
+}
+
+/* Hide the default file input but keep it clickable */
+.file-upload-area input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+/* ==========================================================================
+   9. PHOTO PREVIEW
+   Circular preview thumbnail for uploaded profile pictures.
+   ========================================================================== */
+#photoPreview {
+    display: none;
+    /* Hidden until JS shows it */
+    margin-top: 1rem;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e2e8f0;
+}
+
+
+/* ==========================================================================
+   10. RANGE INPUT
+   Custom accent color matching the club blue.
+   ========================================================================== */
+input[type="range"] {
+    accent-color: #1E88E5;
+    padding: 0;
+    border: none;
+}
+
+input[type="range"]:focus {
+    box-shadow: none;
+}
+
+
+/* ==========================================================================
+   11. TERMS SECTION
+   Terms checkbox with a subtle background highlight.
+   ========================================================================== */
+.terms-section {
+    padding: 1rem 1.25rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 1.5rem;
+}
+
+.terms-check {
+    margin-bottom: 0;
+}
+
+.terms-section a {
+    color: #1E88E5;
+    text-decoration: underline;
+}
+
+
+/* ==========================================================================
+   12. BUTTONS
+   Primary submit button with gradient blue, secondary reset button
+   with ghost outline style.
+   ========================================================================== */
+.button-group {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Shared button base */
+.btn-submit,
+.btn-reset {
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 3rem;
+    /* Pill shape to match main site */
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Primary submit: gradient blue with glow */
+.btn-submit {
+    background: linear-gradient(135deg, #1E88E5, #42A5F5);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(30, 136, 229, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30, 136, 229, 0.4);
+}
+
+.btn-submit i {
+    transition: transform 0.3s;
+}
+
+.btn-submit:hover i {
+    transform: translateX(4px);
+}
+
+/* Secondary reset: ghost outline button */
+.btn-reset {
+    background: transparent;
+    color: #94a3b8;
+    border: 1.5px solid #e2e8f0;
+}
+
+.btn-reset:hover {
+    border-color: #cbd5e1;
+    color: #64748b;
+}
+
+
+/* ==========================================================================
+   13. SUCCESS MESSAGE (output element)
+   Green highlight bar shown after successful form submission.
+   ========================================================================== */
+output {
+    display: block;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: #ecfdf5;
+    border-left: 4px solid #10b981;
+    color: #065f46;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+}
+
+
+/* ==========================================================================
+   14. FOOTER
+   Simple centered footer matching the main site's minimal style.
+   ========================================================================== */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+
+/* ==========================================================================
+   15. RESPONSIVE DESIGN
+   Stack two-column layouts into single column on mobile devices.
+   ========================================================================== */
+@media (max-width: 640px) {
+    header {
+        padding: 2rem 1rem 1.5rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    form {
+        padding: 1.5rem;
+    }
+
+    /* Stack side-by-side fields on small screens */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn-submit,
+    .btn-reset {
+        width: 100%;
+    }
+}
